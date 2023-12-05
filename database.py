@@ -1,13 +1,21 @@
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, text, URL
+from db_auth import load_db_auth
 
-db_connection_string = 'mysql+pymysql://tw9lruclmicne8zqfur1:pscale_pw_qHba2MMYxcB0X4YPT0w8Thtq2alvvBA0wTGQcb4CKmy@aws.connect.psdb.cloud/joviancareers?charset=utf8mb4'
+db_user, db_pass = load_db_auth()
+drivername = 'mysql+pymysql'
+host = 'aws.connect.psdb.cloud'
+port = '3306'
+database = 'joviancareers'
+
+db_connection_string = "{0}://{1}:{2}@{3}:{4}/{5}?charset=utf8mb4".format(drivername, db_user, db_pass, host, port, database)
+
 
 # sqlalchemy connect to mysql
 engine = create_engine(
     db_connection_string,
     connect_args={
         "ssl": {
-            "ssl_ca": "/etc/ssl/cert.pem"
+            "ssl_ca": ".dbcert.pem"
         }
     })
 
