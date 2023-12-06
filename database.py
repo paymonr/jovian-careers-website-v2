@@ -36,7 +36,7 @@ def load_job_from_db(id):
             {'val':id}
         )
     
-        res_dict = result.mappings().all()
+        res_dict = [dict(row._mapping) for row in result.all()]
 
         if res_dict is None:
             return None
