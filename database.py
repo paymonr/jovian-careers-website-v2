@@ -28,3 +28,17 @@ def load_jobs_from_db():
             jobs.append(dict(row._mapping))
         
         return jobs
+
+def load_job_from_db(id):
+    with engine.connect() as conn:
+        result = conn.execute(
+            text("select * from jobs where id=:val"),
+            {'val':id}
+        )
+    
+        res_dict = result.mappings().all()
+
+        if res_dict is None:
+            return None
+        else:
+            return res_dict
