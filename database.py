@@ -1,3 +1,4 @@
+from flask import Flask, render_template, jsonify
 from sqlalchemy import create_engine, text, URL
 from db_auth import load_db_auth
 
@@ -35,10 +36,9 @@ def load_job_from_db(id):
             text("select * from jobs where id=:val"),
             {'val':id}
         )
-    
-        res_dict = [dict(row._mapping) for row in result.all()]
 
-        if res_dict is None:
-            return None
-        else:
-            return res_dict
+        for row in result.all():
+            if row is not None:
+                return row
+            else:
+                return None
